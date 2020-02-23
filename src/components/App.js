@@ -35,14 +35,15 @@ class App extends Component {
     
     if(datosRed){
       const _contrato = new this.web3.eth.Contract(Contrato.abi, datosRed.address)
-      this.setState({ contrato : _contrato})    
+      this.setState({ contrato : _contrato})
       var _serviceList = new Array
-      
+      console.log(_contrato)
       for(var _i=1;_i<11;_i++)
       {
         var _service = await _contrato.methods.getService(_i).call()
         _serviceList[_i]=_service
       }
+      console.log(_serviceList)
       this.setState({servicioList:_serviceList})
     }else{
       console.log("Contrato no ha sido desplegado en la red")
@@ -50,7 +51,7 @@ class App extends Component {
   }
 
   setService = async (event) => {
-    await this.state.contrato.methods.setService(this.state.valorTexto).send({from: this.state.cuenta,})
+    await this.state.contrato.methods.setService(this.state.valorTexto).send({from: this.state.cuenta})
   }
 
   onChange(event) {
@@ -88,7 +89,8 @@ class App extends Component {
                         
               <div className="content mr-auto ml-auto">               
                 
-                <Form.Control id="valorTexto" name="valorTexto" type="text" placeholder="Descripción del Servicio" 
+                <Form.Control id="valorTexto" name="valorTexto" type="text" 
+                  placeholder="Descripción del Servicio" 
                   value={this.state.valorTexto}
                   onChange={this.onChange.bind(this)} 
                 />
